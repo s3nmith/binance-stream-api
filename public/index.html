@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binance Stream Viewer</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>
+            <span id="statusDot" class="status-dot"></span>
+            Binance Market Data Stream
+            <span id="statusText" style="font-size: 0.8rem; color: #8b949e; margin-left: auto;">Disconnected</span>
+        </h1>
+    </header>
+
+    <div class="container">
+        <!-- Control Panel -->
+        <div class="controls">
+            <div class="control-group">
+                <label>Symbol</label>
+                <select id="symbolSelect"></select>
+            </div>
+            <div class="control-group">
+                <label>Stream Type</label>
+                <select id="streamSelect"></select>
+            </div>
+            <div class="control-group">
+                <label>&nbsp;</label>
+                <button id="connectBtn" class="primary">Connect</button>
+            </div>
+            <div class="control-group">
+                <label>&nbsp;</label>
+                <button id="disconnectBtn" class="danger" disabled>Disconnect</button>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div id="statsBar" class="stats-bar">
+            <div class="stat">
+                <span class="stat-label">Status</span>
+                <span class="stat-value">Select a stream and connect</span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Live Data Feed -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Live Data Feed</h2>
+                    <span class="count">Records: <span id="dataCount">0</span></span>
+                </div>
+                <div id="dataFeed" class="data-feed">
+                    <div class="empty-state">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <p>Select a symbol and stream type, then click Connect</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentation Panel -->
+            <div class="panel docs-panel">
+                <div class="panel-header">
+                    <h2>Stream Documentation</h2>
+                </div>
+                <div id="docsContent" class="docs-content">
+                    <p>Select a stream type to see its documentation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
