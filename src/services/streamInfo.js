@@ -285,16 +285,11 @@ const SYMBOLS = [
     { value: 'btcusdt', label: 'BTC/USDT', description: 'Bitcoin' },
     { value: 'ethusdt', label: 'ETH/USDT', description: 'Ethereum' },
     { value: 'bnbusdt', label: 'BNB/USDT', description: 'Binance Coin' },
-    { value: 'solusdt', label: 'SOL/USDT', description: 'Solana' },
-    { value: 'xrpusdt', label: 'XRP/USDT', description: 'Ripple' },
-    { value: 'dogeusdt', label: 'DOGE/USDT', description: 'Dogecoin' },
     { value: 'usdcusdt', label: 'USDC/USDT', description: 'Stablecoin cross with strong activity' },
     { value: 'btcusdc', label: 'BTC/USDC', description: 'Bitcoin quoted in USDC' },
     { value: 'ethusdc', label: 'ETH/USDC', description: 'Ethereum quoted in USDC' },
-    { value: 'solusdc', label: 'SOL/USDC', description: 'Solana quoted in USDC' },
     { value: 'euriusdt', label: 'EURI/USDT', description: 'Euro stablecoin vs Tether' },
     { value: 'euriusdc', label: 'EURI/USDC', description: 'Euro stablecoin vs USDC' },
-    { value: 'btceuri', label: 'BTC/EURI', description: 'Bitcoin quoted in euro stablecoin' },
     { value: 'eureuri', label: 'EUR/EURI', description: 'Euro vs euro stablecoin cross' }
 ];
 
