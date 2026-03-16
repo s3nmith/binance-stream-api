@@ -207,6 +207,38 @@ button.danger:hover {
     margin-top: 5px;
 }
 
+.depth-book {
+    margin-top: 6px;
+    font-size: 0.8rem;
+}
+
+.depth-header {
+    display: flex;
+    justify-content: space-between;
+    color: #8b949e;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 4px 0 2px;
+}
+
+.depth-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1px 0;
+}
+
+.depth-qty {
+    color: #8b949e;
+}
+
+.depth-mid {
+    text-align: center;
+    color: #30363d;
+    font-size: 0.7rem;
+    margin: 3px 0;
+}
+
 /* =============================================================================
    DOCUMENTATION PANEL
    ============================================================================= */

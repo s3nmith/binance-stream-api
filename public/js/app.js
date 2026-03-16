@@ -221,6 +221,10 @@ function formatDataItem(data, streamType) {
             return formatRollingTickerItem(data, time);
         case 'kline_1m':
             return formatKlineItem(data, time);
+        case 'depth5':
+        case 'depth10':
+        case 'depth20':
+            return formatDepthItem(data, time);
         default:
             return formatGenericItem(data, time);
     }
@@ -334,6 +338,35 @@ function formatKlineItem(data, time) {
                 O: $${open} | H: $${high} | L: $${low} | C: $${close}
             </div>
             <div class="details">Trades: ${k.n} | Volume: ${parseFloat(k.v).toFixed(4)}</div>
+        </div>
+    `;
+}
+
+function formatDepthItem(data, time) {
+    const bids = data.bids || [];
+    const asks = data.asks || [];
+    const bestBid = bids[0] ? parseFloat(bids[0][0]) : 0;
+    const bestAsk = asks[0] ? parseFloat(asks[0][0]) : 0;
+    const spread = bestBid && bestAsk ? formatSpread(bestAsk - bestBid) : '-';
+
+    const asksHtml = [...asks].reverse().map(([price, qty]) =>
+        `<div class="depth-row"><span class="sell">${formatPrice(price)}</span><span class="depth-qty">${parseFloat(qty).toFixed(4)}</span></div>`
+    ).join('');
+
+    const bidsHtml = bids.map(([price, qty]) =>
+        `<div class="depth-row"><span class="buy">${formatPrice(price)}</span><span class="depth-qty">${parseFloat(qty).toFixed(4)}</span></div>`
+    ).join('');
+
+    return `
+        <div class="data-item">
+            <div class="time">${time} &nbsp;|&nbsp; Spread: $${spread}</div>
+            <div class="depth-book">
+                <div class="depth-header"><span>Ask Price</span><span>Quantity</span></div>
+                ${asksHtml}
+                <div class="depth-mid">── mid ──</div>
+                <div class="depth-header"><span>Bid Price</span><span>Quantity</span></div>
+                ${bidsHtml}
+            </div>
         </div>
     `;
 }
@@ -456,6 +489,36 @@ function updateStats(data, streamType) {
                 <div class="stat">
                     <span class="stat-label">Trades</span>
                     <span class="stat-value">${Number(data.n).toLocaleString()}</span>
+                </div>
+            `;
+            break;
+        case 'depth5':
+        case 'depth10':
+        case 'depth20':
+            const bestBid = (data.bids || [])[0];
+            const bestAsk = (data.asks || [])[0];
+            const totalBidQty = (data.bids || []).reduce((s, [, q]) => s + parseFloat(q), 0);
+            const totalAskQty = (data.asks || []).reduce((s, [, q]) => s + parseFloat(q), 0);
+            html = `
+                <div class="stat">
+                    <span class="stat-label">Best Bid</span>
+                    <span class="stat-value buy">$${bestBid ? formatPrice(bestBid[0]) : '-'}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Best Ask</span>
+                    <span class="stat-value sell">$${bestAsk ? formatPrice(bestAsk[0]) : '-'}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Spread</span>
+                    <span class="stat-value">$${bestBid && bestAsk ? formatSpread(parseFloat(bestAsk[0]) - parseFloat(bestBid[0])) : '-'}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Bid Depth</span>
+                    <span class="stat-value">${totalBidQty.toFixed(4)}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Ask Depth</span>
+                    <span class="stat-value">${totalAskQty.toFixed(4)}</span>
                 </div>
             `;
             break;

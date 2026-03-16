@@ -119,6 +119,39 @@ const STREAM_TYPES = {
         }
     },
 
+    depth5: {
+        name: 'Partial Depth (Top 5)',
+        description: 'Top 5 bids and asks from the order book, delivered as a full snapshot on every update. No local state management needed — each message is self-contained. Best for tight spread checks and quick liquidity reads.',
+        frequency: 'Real-time (~1 second)',
+        fields: {
+            lastUpdateId: { name: 'Last Update ID', description: 'Order book update ID for sequencing' },
+            bids: { name: 'Bids', description: 'Array of top 5 buy orders: [[price, quantity], ...] sorted highest price first' },
+            asks: { name: 'Asks', description: 'Array of top 5 sell orders: [[price, quantity], ...] sorted lowest price first' }
+        }
+    },
+
+    depth10: {
+        name: 'Partial Depth (Top 10)',
+        description: 'Top 10 bids and asks from the order book, delivered as a full snapshot on every update. Good balance for checking liquidity walls and slippage impact around the mid price.',
+        frequency: 'Real-time (~1 second)',
+        fields: {
+            lastUpdateId: { name: 'Last Update ID', description: 'Order book update ID for sequencing' },
+            bids: { name: 'Bids', description: 'Array of top 10 buy orders: [[price, quantity], ...] sorted highest price first' },
+            asks: { name: 'Asks', description: 'Array of top 10 sell orders: [[price, quantity], ...] sorted lowest price first' }
+        }
+    },
+
+    depth20: {
+        name: 'Partial Depth (Top 20)',
+        description: 'Top 20 bids and asks from the order book, delivered as a full snapshot on every update. Maximum depth view for partial streams — useful for larger orders where you need to see further into the book.',
+        frequency: 'Real-time (~1 second)',
+        fields: {
+            lastUpdateId: { name: 'Last Update ID', description: 'Order book update ID for sequencing' },
+            bids: { name: 'Bids', description: 'Array of top 20 buy orders: [[price, quantity], ...] sorted highest price first' },
+            asks: { name: 'Asks', description: 'Array of top 20 sell orders: [[price, quantity], ...] sorted lowest price first' }
+        }
+    },
+
     miniTicker: {
         name: 'Mini Ticker (24h)',
         description: 'Simplified 24-hour rolling statistics. Ideal for stablecoin pairs — shows OHLC and volume without noise. Stream name: &lt;symbol&gt;@miniTicker.',
@@ -241,10 +274,10 @@ const STREAM_GROUPS = [
     },
     {
         label: 'Order Book Streams (Liquidity & Depth)',
-        description: 'Pushes real-time changes to the order book. ' +
-            '<b>Book Ticker</b> fires instantly whenever the best bid or ask price/quantity changes, ' +
-            'giving you the tightest possible spread view with 100+ updates per second.',
-        streams: ['bookTicker']
+        description: 'Pushes real-time order book data. ' +
+            '<b>Book Ticker</b> fires instantly whenever the best bid or ask changes — tightest spread view with 100+ updates per second. ' +
+            '<b>Partial Depth</b> streams give you a full snapshot of the top 5, 10, or 20 price levels on every update — no state management needed.',
+        streams: ['bookTicker', 'depth5', 'depth10', 'depth20']
     }
 ];
 
