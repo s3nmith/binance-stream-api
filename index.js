@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 // CONFIGURATION
 // =============================================================================
 
-const BINANCE_WS_URL = 'wss://stream.binance.com:9443/ws';
+const BINANCE_WS_URL = 'wss://data-stream.binance.vision/ws';
 const SYMBOL = 'btcusdt';
 const STREAM_TYPE = 'bookTicker'; // Options: aggTrade, trade, kline_1m, ticker, bookTicker
 

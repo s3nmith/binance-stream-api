@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const http = require('http');
 
 const binanceStream = require('./services/binanceStream');
-const { STREAM_TYPES, SYMBOLS } = require('./services/streamInfo');
+const { STREAM_TYPES, STREAM_GROUPS, SYMBOLS } = require('./services/streamInfo');
 
 // =============================================================================
 // SERVER SETUP
@@ -30,6 +30,11 @@ app.get('/api/stream-types', (req, res) => {
 // Get available symbols
 app.get('/api/symbols', (req, res) => {
     res.json(SYMBOLS);
+});
+
+// Get stream groups (categories for UI grouping)
+app.get('/api/stream-groups', (req, res) => {
+    res.json(STREAM_GROUPS);
 });
 
 // Get current status

@@ -117,8 +117,136 @@ const STREAM_TYPES = {
             a: { name: 'Best Ask Price', description: 'Lowest sell order price' },
             A: { name: 'Best Ask Qty', description: 'Quantity at best ask price' }
         }
+    },
+
+    miniTicker: {
+        name: 'Mini Ticker (24h)',
+        description: 'Simplified 24-hour rolling statistics. Ideal for stablecoin pairs — shows OHLC and volume without noise. Stream name: &lt;symbol&gt;@miniTicker.',
+        frequency: 'Every 1 second',
+        fields: {
+            e: { name: 'Event Type', description: 'Always "24hrMiniTicker"' },
+            E: { name: 'Event Time', description: 'Unix timestamp (ms)' },
+            s: { name: 'Symbol', description: 'Trading pair' },
+            c: { name: 'Close Price', description: 'Latest/current price' },
+            o: { name: 'Open Price', description: '24h rolling open price' },
+            h: { name: 'High Price', description: '24h rolling high price' },
+            l: { name: 'Low Price', description: '24h rolling low price' },
+            v: { name: 'Base Volume', description: '24h total traded volume in base asset' },
+            q: { name: 'Quote Volume', description: '24h total traded volume in quote asset' }
+        }
+    },
+
+    ticker_1h: {
+        name: 'Rolling Window Ticker (1h)',
+        description: 'Full statistics computed over a 1-hour rolling window instead of 24h. Stream name: &lt;symbol&gt;@ticker_1h.',
+        frequency: 'Every 1 second',
+        fields: {
+            e: { name: 'Event Type', description: 'Always "1hTicker"' },
+            E: { name: 'Event Time', description: 'Unix timestamp (ms)' },
+            s: { name: 'Symbol', description: 'Trading pair' },
+            p: { name: 'Price Change', description: 'Absolute price change over the window' },
+            P: { name: 'Price Change %', description: 'Percentage price change over the window' },
+            o: { name: 'Open Price', description: 'Window open price' },
+            h: { name: 'High Price', description: 'Window high price' },
+            l: { name: 'Low Price', description: 'Window low price' },
+            c: { name: 'Close Price', description: 'Latest/current price' },
+            w: { name: 'Weighted Avg Price', description: 'Volume-weighted average price over window' },
+            v: { name: 'Base Volume', description: 'Total traded volume in base asset' },
+            q: { name: 'Quote Volume', description: 'Total traded volume in quote asset' },
+            O: { name: 'Window Open Time', description: 'Unix timestamp (ms) when window opened' },
+            C: { name: 'Window Close Time', description: 'Unix timestamp (ms) when window closes' },
+            F: { name: 'First Trade ID', description: 'First trade ID in the window' },
+            L: { name: 'Last Trade ID', description: 'Last trade ID in the window' },
+            n: { name: 'Trade Count', description: 'Number of trades in the window' }
+        }
+    },
+
+    ticker_4h: {
+        name: 'Rolling Window Ticker (4h)',
+        description: 'Full statistics computed over a 4-hour rolling window. Stream name: &lt;symbol&gt;@ticker_4h.',
+        frequency: 'Every 1 second',
+        fields: {
+            e: { name: 'Event Type', description: 'Always "4hTicker"' },
+            E: { name: 'Event Time', description: 'Unix timestamp (ms)' },
+            s: { name: 'Symbol', description: 'Trading pair' },
+            p: { name: 'Price Change', description: 'Absolute price change over the window' },
+            P: { name: 'Price Change %', description: 'Percentage price change over the window' },
+            o: { name: 'Open Price', description: 'Window open price' },
+            h: { name: 'High Price', description: 'Window high price' },
+            l: { name: 'Low Price', description: 'Window low price' },
+            c: { name: 'Close Price', description: 'Latest/current price' },
+            w: { name: 'Weighted Avg Price', description: 'Volume-weighted average price over window' },
+            v: { name: 'Base Volume', description: 'Total traded volume in base asset' },
+            q: { name: 'Quote Volume', description: 'Total traded volume in quote asset' },
+            O: { name: 'Window Open Time', description: 'Unix timestamp (ms) when window opened' },
+            C: { name: 'Window Close Time', description: 'Unix timestamp (ms) when window closes' },
+            F: { name: 'First Trade ID', description: 'First trade ID in the window' },
+            L: { name: 'Last Trade ID', description: 'Last trade ID in the window' },
+            n: { name: 'Trade Count', description: 'Number of trades in the window' }
+        }
+    },
+
+    ticker_1d: {
+        name: 'Rolling Window Ticker (1d)',
+        description: 'Full statistics computed over a 1-day rolling window. Stream name: &lt;symbol&gt;@ticker_1d.',
+        frequency: 'Every 1 second',
+        fields: {
+            e: { name: 'Event Type', description: 'Always "1dTicker"' },
+            E: { name: 'Event Time', description: 'Unix timestamp (ms)' },
+            s: { name: 'Symbol', description: 'Trading pair' },
+            p: { name: 'Price Change', description: 'Absolute price change over the window' },
+            P: { name: 'Price Change %', description: 'Percentage price change over the window' },
+            o: { name: 'Open Price', description: 'Window open price' },
+            h: { name: 'High Price', description: 'Window high price' },
+            l: { name: 'Low Price', description: 'Window low price' },
+            c: { name: 'Close Price', description: 'Latest/current price' },
+            w: { name: 'Weighted Avg Price', description: 'Volume-weighted average price over window' },
+            v: { name: 'Base Volume', description: 'Total traded volume in base asset' },
+            q: { name: 'Quote Volume', description: 'Total traded volume in quote asset' },
+            O: { name: 'Window Open Time', description: 'Unix timestamp (ms) when window opened' },
+            C: { name: 'Window Close Time', description: 'Unix timestamp (ms) when window closes' },
+            F: { name: 'First Trade ID', description: 'First trade ID in the window' },
+            L: { name: 'Last Trade ID', description: 'Last trade ID in the window' },
+            n: { name: 'Trade Count', description: 'Number of trades in the window' }
+        }
     }
 };
+
+// =============================================================================
+// STREAM GROUPS — defines how stream types are categorised in the UI
+// =============================================================================
+
+const STREAM_GROUPS = [
+    {
+        label: 'Trade Streams (Live Transactions)',
+        description: 'Pushes raw trade data in real-time as transactions occur on the exchange. ' +
+            '<b>Trade</b> shows every individual match (unique buyer + seller). ' +
+            '<b>Aggregate Trade</b> bundles all matches for a single taker order into one event.',
+        streams: ['trade', 'aggTrade']
+    },
+    {
+        label: 'Price & Statistic Streams (Tickers)',
+        description: 'Pushes rolling price statistics for a symbol, updating every second. ' +
+            'Especially useful for stablecoin pairs where the signal lives in the 4th–6th decimal place. ' +
+            '<b>Ticker</b> gives a full 24h breakdown. <b>Mini Ticker</b> gives a lightweight OHLCV view. ' +
+            '<b>Rolling Window</b> lets you pick a 1h, 4h, or 1d window instead of the fixed 24h.',
+        streams: ['ticker', 'miniTicker', 'ticker_1h', 'ticker_4h', 'ticker_1d']
+    },
+    {
+        label: 'Charting Streams (Candlesticks)',
+        description: 'Pushes live OHLCV candlestick updates every ~2 seconds as each candle forms. ' +
+            'A <b>closed</b> flag marks when a candle is final. ' +
+            'Intervals from 1 second up to 1 month are supported via the stream name.',
+        streams: ['kline_1m']
+    },
+    {
+        label: 'Order Book Streams (Liquidity & Depth)',
+        description: 'Pushes real-time changes to the order book. ' +
+            '<b>Book Ticker</b> fires instantly whenever the best bid or ask price/quantity changes, ' +
+            'giving you the tightest possible spread view with 100+ updates per second.',
+        streams: ['bookTicker']
+    }
+];
 
 const SYMBOLS = [
     { value: 'btcusdt', label: 'BTC/USDT', description: 'Bitcoin' },
@@ -126,7 +254,15 @@ const SYMBOLS = [
     { value: 'bnbusdt', label: 'BNB/USDT', description: 'Binance Coin' },
     { value: 'solusdt', label: 'SOL/USDT', description: 'Solana' },
     { value: 'xrpusdt', label: 'XRP/USDT', description: 'Ripple' },
-    { value: 'dogeusdt', label: 'DOGE/USDT', description: 'Dogecoin' }
+    { value: 'dogeusdt', label: 'DOGE/USDT', description: 'Dogecoin' },
+    { value: 'usdcusdt', label: 'USDC/USDT', description: 'Stablecoin cross with strong activity' },
+    { value: 'btcusdc', label: 'BTC/USDC', description: 'Bitcoin quoted in USDC' },
+    { value: 'ethusdc', label: 'ETH/USDC', description: 'Ethereum quoted in USDC' },
+    { value: 'solusdc', label: 'SOL/USDC', description: 'Solana quoted in USDC' },
+    { value: 'euriusdt', label: 'EURI/USDT', description: 'Euro stablecoin vs Tether' },
+    { value: 'euriusdc', label: 'EURI/USDC', description: 'Euro stablecoin vs USDC' },
+    { value: 'btceuri', label: 'BTC/EURI', description: 'Bitcoin quoted in euro stablecoin' },
+    { value: 'eureuri', label: 'EUR/EURI', description: 'Euro vs euro stablecoin cross' }
 ];
 
-module.exports = { STREAM_TYPES, SYMBOLS };
+module.exports = { STREAM_TYPES, STREAM_GROUPS, SYMBOLS };
