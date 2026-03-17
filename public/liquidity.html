@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stablecoin Liquidity Dashboard - Binance</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/liquidity.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>
+            <span id="statusDot" class="status-dot"></span>
+            Stablecoin Liquidity Dashboard
+            <span id="statusText" style="font-size: 0.8rem; color: #8b949e; margin-left: auto;">Loading...</span>
+        </h1>
+        <nav class="nav-links">
+            <a href="/">Stream Viewer</a>
+            <a href="/liquidity.html" class="active">Liquidity Dashboard</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- Available Stablecoins Overview -->
+        <div class="stablecoin-overview">
+            <h2>Stablecoins Available on Binance</h2>
+            <p>These are the stablecoins currently tradeable on Binance exchange.</p>
+
+            <div class="stablecoin-grid">
+                <!-- USD Stablecoins -->
+                <div class="stablecoin-category">
+                    <h3>USD-Pegged</h3>
+                    <div class="stablecoin-list">
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">USDT</span>
+                            <span class="stablecoin-name">Tether</span>
+                            <span class="stablecoin-note">Most liquid, 400+ pairs</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">USDC</span>
+                            <span class="stablecoin-name">USD Coin (Circle)</span>
+                            <span class="stablecoin-note">MiCA compliant</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">FDUSD</span>
+                            <span class="stablecoin-name">First Digital USD</span>
+                            <span class="stablecoin-note">Zero-fee pairs available</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">TUSD</span>
+                            <span class="stablecoin-name">TrueUSD</span>
+                            <span class="stablecoin-note">Real-time attestation</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">USDP</span>
+                            <span class="stablecoin-name">Pax Dollar</span>
+                            <span class="stablecoin-note">Regulated by NYDFS</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">DAI</span>
+                            <span class="stablecoin-name">Dai (MakerDAO)</span>
+                            <span class="stablecoin-note">Decentralized/algorithmic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EUR Stablecoins -->
+                <div class="stablecoin-category">
+                    <h3>EUR-Pegged</h3>
+                    <div class="stablecoin-list">
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">EURI</span>
+                            <span class="stablecoin-name">Eurite Euro Token</span>
+                            <span class="stablecoin-note">MiCA compliant, Binance distributed</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">AEUR</span>
+                            <span class="stablecoin-name">Anchored Euro</span>
+                            <span class="stablecoin-note">Limited availability</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fiat Currencies -->
+                <div class="stablecoin-category">
+                    <h3>Fiat Currencies (Direct Trading)</h3>
+                    <div class="stablecoin-list">
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">EUR</span>
+                            <span class="stablecoin-name">Euro</span>
+                            <span class="stablecoin-note">Direct fiat pairs</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">GBP</span>
+                            <span class="stablecoin-name">British Pound</span>
+                            <span class="stablecoin-note">Limited pairs</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">TRY</span>
+                            <span class="stablecoin-name">Turkish Lira</span>
+                            <span class="stablecoin-note">Regional availability</span>
+                        </div>
+                        <div class="stablecoin-item">
+                            <span class="stablecoin-ticker">BRL</span>
+                            <span class="stablecoin-name">Brazilian Real</span>
+                            <span class="stablecoin-note">Regional availability</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stablecoin-note-box">
+                <strong>Note:</strong> For EEA (European) users, only MiCA-compliant stablecoins (USDC, EURI) and EUR fiat pairs
+                are available for trading as of March 2025. Other stablecoins can still be held and converted via Binance Convert.
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="control-group">
+                <label>Auto-Refresh</label>
+                <select id="refreshInterval">
+                    <option value="0">Manual Only</option>
+                    <option value="10000">Every 10 seconds</option>
+                    <option value="30000" selected>Every 30 seconds</option>
+                    <option value="60000">Every 1 minute</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>&nbsp;</label>
+                <button id="refreshBtn" class="primary">Refresh Now</button>
+            </div>
+            <div class="control-group last-updated">
+                <label>Last Updated</label>
+                <span id="lastUpdated">-</span>
+            </div>
+        </div>
+
+        <!-- Liquidity Sections - Prioritized Order -->
+        <div class="liquidity-sections">
+
+            <!-- 1. Stablecoin Cross Pairs (MOST IMPORTANT) -->
+            <section class="liquidity-section priority-high">
+                <div class="section-header">
+                    <h2>Stablecoin Cross Pairs</h2>
+                    <p>Direct stablecoin-to-stablecoin trading. Best for converting between stablecoins with minimal slippage.</p>
+                </div>
+                <div id="stablecoinCrosses" class="liquidity-grid">
+                    <div class="loading-state">Loading...</div>
+                </div>
+            </section>
+
+            <!-- 2. Fiat/Stablecoin Pairs -->
+            <section class="liquidity-section priority-high">
+                <div class="section-header">
+                    <h2>Fiat / Stablecoin Pairs</h2>
+                    <p>Trade directly between fiat currencies and stablecoins. Essential for on/off ramping.</p>
+                </div>
+                <div id="fiatStablecoinPairs" class="liquidity-grid">
+                    <div class="loading-state">Loading...</div>
+                </div>
+            </section>
+
+            <!-- 3. EUR Stablecoin Pairs -->
+            <section class="liquidity-section">
+                <div class="section-header">
+                    <h2>EUR Stablecoin Ecosystem</h2>
+                    <p>All pairs involving EURI and other EUR-pegged stablecoins.</p>
+                </div>
+                <div id="eurPairs" class="liquidity-grid">
+                    <div class="loading-state">Loading...</div>
+                </div>
+            </section>
+
+            <!-- 4. Major Crypto in Stablecoins (for reference) -->
+            <section class="liquidity-section collapsed-by-default">
+                <div class="section-header collapsible" onclick="toggleSection(this)">
+                    <h2>Major Crypto / Stablecoin Pairs <span class="collapse-icon">+</span></h2>
+                    <p>BTC, ETH, BNB quoted in various stablecoins. Shows relative stablecoin liquidity.</p>
+                </div>
+                <div id="majorPairs" class="liquidity-grid" style="display: none;">
+                    <div class="loading-state">Loading...</div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- API Explanation -->
+        <div class="info-panel">
+            <h2>How This Data Is Fetched</h2>
+
+            <div class="api-explanation">
+                <div class="api-card">
+                    <code>GET /api/v3/exchangeInfo</code>
+                    <span class="api-desc">Lists all available trading pairs on Binance</span>
+                    <ul>
+                        <li>We filter for stablecoin and fiat pairs only</li>
+                        <li>Checks which pairs are actively trading</li>
+                    </ul>
+                </div>
+
+                <div class="api-card">
+                    <code>GET /api/v3/ticker/24hr?symbol=XXXYYY</code>
+                    <span class="api-desc">24-hour rolling statistics for a trading pair</span>
+                    <ul>
+                        <li><strong>quoteVolume</strong> - Total value traded in 24h</li>
+                        <li><strong>count</strong> - Number of trades in 24h</li>
+                        <li><strong>bidPrice / askPrice</strong> - Best bid and ask</li>
+                        <li><strong>priceChangePercent</strong> - 24h price movement</li>
+                    </ul>
+                </div>
+
+                <div class="api-card">
+                    <code>GET /api/v3/depth?symbol=XXXYYY&limit=100</code>
+                    <span class="api-desc">Order book snapshot (pending orders)</span>
+                    <ul>
+                        <li><strong>bids</strong> - Buy orders: [[price, quantity], ...]</li>
+                        <li><strong>asks</strong> - Sell orders: [[price, quantity], ...]</li>
+                        <li>We sum orders within 0.1% of best price for "tight liquidity"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend-panel">
+            <h3>Understanding the Metrics</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <span class="legend-label">24h Volume</span>
+                    <span class="legend-desc">Total value traded in the last 24 hours (actual executed trades)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-label">24h Trades</span>
+                    <span class="legend-desc">Number of individual trade executions in 24 hours</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-label">Spread</span>
+                    <span class="legend-desc">Gap between best bid and ask. Lower = tighter market, better for trading</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-label">Bid Depth (0.1%)</span>
+                    <span class="legend-desc">Total value of buy orders within 0.1% of best bid. How much you can sell without moving price</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-label">Ask Depth (0.1%)</span>
+                    <span class="legend-desc">Total value of sell orders within 0.1% of best ask. How much you can buy without moving price</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/liquidity.js"></script>
+</body>
+</html>
