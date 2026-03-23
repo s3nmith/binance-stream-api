@@ -49,7 +49,9 @@ class BinanceStreamService {
         this.currentStream = { symbol, streamType };
 
         const streamName = `${symbol.toLowerCase()}@${streamType}`;
-        const wsUrl = `wss://stream.binance.com:9443/ws/${streamName}`;
+        // Using data-stream.binance.vision for public market data (no API key needed)
+        // Format: wss://data-stream.binance.vision/ws/<streamName>
+        const wsUrl = `wss://data-stream.binance.vision/ws/${streamName}`;
 
         console.log(`Connecting to: ${streamName}`);
 
